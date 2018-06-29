@@ -28,7 +28,7 @@ class ApiModel(object):
 
 class Image(ApiModel):
 
-    def __init__(self, url, width, height):
+    def __init__(self, url, width, height, **kwargs):
         self.url = url
         self.height = height
         self.width = width
@@ -96,8 +96,11 @@ class Media(ApiModel):
 
         new_media.comment_count = entry['comments']['count']
         new_media.comments = []
-        for comment in entry['comments']['data']:
-            new_media.comments.append(Comment.object_from_dictionary(comment))
+        #for comment in entry['comments']['data']:
+        #    new_media.comments.append(Comment.object_from_dictionary(comment))
+        if entry['comments'].get('data'):
+            for comment in entry['comments']['data']:
+                new_media.comments.append(Comment.object_from_dictionary(comment))
 
         new_media.users_in_photo = []
         if entry.get('users_in_photo'):
